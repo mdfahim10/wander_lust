@@ -6,27 +6,20 @@ const listingSchema = new Schema({
         type: String,
         required: true,
     },
-    description: {
-        type: String,
-    },
+    description: String,
     image: {
-        type: String,
-        default:
-            "https://akm-img-a-in.tosshub.com/lingo/hmag/images/story/202507/686e1b599214e-pataudi-palace-saif-ali-khan-ibrahim-kothi-093340257-16x9.jpg?size=699:*",
-        set: (v) =>
-            v === ""
-                ? "https://akm-img-a-in.tosshub.com/lingo/hmag/images/story/202507/686e1b599214e-pataudi-palace-saif-ali-khan-ibrahim-kothi-093340257-16x9.jpg?size=699:*"
-                : v,
+        filename: String,
+        url: String,
     },
-    price:{
+    price: {
         type: Number,
         required: true,
     },
-    location:{
+    location: {
         type: String,
         required: true,
     },
-    country:{
+    country: {
         type: String,
         required: true,
     },
