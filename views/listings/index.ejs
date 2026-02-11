@@ -3,14 +3,19 @@
  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dwander_lust</title>
+    <title>wander_lust</title>
  </head>
  <body>
-    <h2>All List</h2>
+    <h3>All List</h3>
     <ul>
-        <% for(let listing of allListings){%>
-            <li><a href="/listings_.id %>"> <%= listing.title %></a></li>
-            <%}%>
+        <% for(let listing of allListings){ %>
+    <h5>
+        <a href="/listings/<%= listing._id %>">
+            <%= listing.title %>
+        </a>
+    </h5>
+<% } %>
+
     </ul>
  </body>
  </html>

@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
-const path = require("path")
+const path = require("path");
 
 // ----------------------- Mongo URL -----------------------
 const MONGO_URL = "mongodb://127.0.0.1:27017/wander_lust";
@@ -11,9 +11,7 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/wander_lust";
 async function main() {
     await mongoose.connect(MONGO_URL);
 }
-//-------------------------View Engine-----------------------------
-app.set("view engine","ejs");
-app.set("views",path.join(__dirname,"views"));
+
 main()
     .then(() => {
         console.log("Connected to DB");
@@ -22,16 +20,28 @@ main()
         console.log(err);
     });
 
-// -------------------------- API -----------------------------
+// ------------------------- View Engine -----------------------------
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// -------------------------- Home -----------------------------
 app.get("/", (req, res) => {
     res.send("Hi, I am Root");
 });
 
-// -------------------------- Sample Listing -----------------------
-app.get("/listings",async (req,res)=>{
+// -------------------------- Index Route -----------------------
+app.get("/listings", async (req, res) => {
     const allListings = await Listing.find({});
-    res.render("listings/index.ejs",{allListings});
+    res.render("listings/index", { allListings });
 });
+
+// -------------------------- Show Route -------------------------
+app.get("/listings/:id", async (req, res) => {
+    let { id } = req.params;
+    const listing = await Listing.findById(id);
+    res.render("listings/show", { listing });
+});
+
 // ----------------------- PORT -----------------------
 app.listen(8080, () => {
     console.log("Server is listening to port 8080");
