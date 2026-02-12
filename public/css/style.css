@@ -87,3 +87,14 @@ h3 {
     background-color: #fe424d !important;
     border: none !important;
 }
+.show-img {
+    height: 55vh;      
+    width: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+.show-card {
+    order: none;
+  padding-left: 0;
+  padding-right: 0;
+}
