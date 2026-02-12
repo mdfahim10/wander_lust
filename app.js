@@ -3,21 +3,16 @@ const express = require("express");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 const path = require("path");
-
-
-
+const ejsMate = require("ejs-mate");
 // ----------------------- Mongo URL -----------------------
 const MONGO_URL = "mongodb://127.0.0.1:27017/wander_lust";
-
 // ----------------------- DB Connection -----------------------
 async function main() {
     await mongoose.connect(MONGO_URL);
 }
-
 main()
     .then(() => {
         console.log("Connected to DB");
@@ -25,16 +20,15 @@ main()
     .catch((err) => {
         console.log(err);
     });
-
 // ------------------------- View Engine -----------------------------
+app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
-// -------------------------- Home -----------------------------
+app.use(express.static(path.join(__dirname,"/public")));
+// -------------------------- Home Route -----------------------
 app.get("/", (req, res) => {
-    res.send("Hi, I am Root");
+    res.redirect("/listings");
 });
-
 // -------------------------- Index Route -----------------------
 app.get("/listings", async (req, res) => {
     const allListings = await Listing.find({});
