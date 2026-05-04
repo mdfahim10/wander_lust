@@ -6,7 +6,7 @@
 <div class="container mt-4">
   <h3 class="mb-4">Create a New Listing</h3>
 
-  <form method="POST" action="/listings">
+  <form method="POST" action="/listings" novalidate class="needs-validation">
 
     <!-- Title -->
     <div class="mb-3">
@@ -15,9 +15,10 @@
         name="listing[title]" 
         type="text"
         class="form-control"
-        placeholder="Enter title"
         required
       />
+      <div class="valid-feedback">Title looks good</div>
+      <div class="invalid-feedback">please enter a title</div>
     </div>
 
     <!-- Description -->
@@ -52,6 +53,7 @@
         placeholder="Enter price"
         required
       />
+      <div class="invalid-feedback">please enter a price</div>
     </div>
 
     <!-- Country -->
@@ -65,6 +67,7 @@
         required
       />
     </div>
+    <div class="invalid-feedback">please enter the country name</div>
     </div>
 
     <!-- Location -->
@@ -77,6 +80,7 @@
         placeholder="Enter location"
         required
       />
+      <div class="invalid-feedback">please enter a location</div>
     </div>
     <!-- Button -->
     <button class="btn btn-dark add-btn" >Add Listing</button>

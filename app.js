@@ -1,3 +1,6 @@
+const { listingSchema } = require("./schema");
+const ExpressError = require("./utils/ExpressError");
+const wrapAsync = require("./utils/wrapAsync");
 const methodOverride = require("method-override");
 const express = require("express");
 const app = express();
@@ -7,6 +10,7 @@ const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 const path = require("path");
 const ejsMate = require("ejs-mate");
+
 // ----------------------- Mongo URL -----------------------
 const MONGO_URL = "mongodb://127.0.0.1:27017/wander_lust";
 // ----------------------- DB Connection -----------------------
@@ -51,14 +55,17 @@ app.get("/listings/:id", async (req, res) => {
     res.render("listings/show", { listing });
 });
 // -------------------------- Create Route -------------------------
-app.post("/listings", async (req, res) => {
+app.post("/listings", wrapAsync(async (req, res, next) => {
+
+    // 1️⃣ Get listing data from form
     const listingData = req.body.listing;
 
+    // 2️⃣ Create new listing
     const newListing = new Listing({
         title: listingData.title,
         description: listingData.description,
         image: {
-            url: listingData.image.url,
+            url: listingData.image?.url || "",
             filename: "listingimage"
         },
         price: listingData.price,
@@ -66,11 +73,13 @@ app.post("/listings", async (req, res) => {
         country: listingData.country
     });
 
+    // 3️⃣ Save to database
     await newListing.save();
+
+    // 4️⃣ Redirect after success
     res.redirect("/listings");
-});
 
-
+}));
 // -------------------------- Update Route -------------------------
 app.put("/listings/:id", async (req, res) => {
     const { id } = req.params;
@@ -96,7 +105,24 @@ app.delete("/listings/:id", async (req, res) => {
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 });
+app.use((req, res, next) => {
+    next(new ExpressError(404, "Page Not Found!"));
+});
+
+app.use((req, res, next) => {
+    next(new ExpressError(404, "Page Not Found!"));
+});
+
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = "Something Went Wrong!" } = err;
+    res.status(statusCode).render("error.ejs", { message });
+});
+
+
 // ----------------------- PORT -----------------------
+app.use((err, req, res, next)=>{
+    res.send("Something went wrong!");
+});
 app.listen(8080, () => {
     console.log("Server is listening to port 8080");
 });
