@@ -11,6 +11,7 @@ const Listing = require("./models/listing.js");
 const Review = require("./models/review.js");
 const path = require("path");
 const ejsMate = require("ejs-mate");
+const listings = require("./routes/listing.js");
 
 // ----------------------- Mongo URL -----------------------
 const MONGO_URL = "mongodb://127.0.0.1:27017/wander_lust";
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
     res.redirect("/listings");
 });
 
+app.use("/listings",listings)
 // -------------------------- Review Validation Middleware -----------------------
 const validateReview = (req, res, next) => {
     let { error } = reviewSchema.validate(req.body);
@@ -45,79 +47,6 @@ const validateReview = (req, res, next) => {
     }
     next();
 };
-
-// -------------------------- Index Route -----------------------
-app.get("/listings", async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index", { allListings });
-});
-// -------------------------- New Route -------------------------
-app.get("/listings/new",(req,res)=>{
-    res.render("listings/new.ejs");
-});
-// -------------------------- Edit Route -------------------------
-app.get("/listings/:id/edit", async (req, res) => {
-    const { id } = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/edit", { listing });
-});
-// -------------------------- Show Route -------------------------
-app.get("/listings/:id", async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
-    res.render("listings/show", { listing });
-});
-// -------------------------- Create Route -------------------------
-app.post("/listings", wrapAsync(async (req, res, next) => {
-
-    // 1️⃣ Get listing data from form
-    const listingData = req.body.listing;
-
-    // 2️⃣ Create new listing
-    const newListing = new Listing({
-        title: listingData.title,
-        description: listingData.description,
-        image: {
-            url: listingData.image?.url || "",
-            filename: "listingimage"
-        },
-        price: listingData.price,
-        location: listingData.location,
-        country: listingData.country
-    });
-
-    // 3️⃣ Save to database
-    await newListing.save();
-
-    // 4️⃣ Redirect after success
-    res.redirect("/listings");
-
-}));
-// -------------------------- Update Route -------------------------
-app.put("/listings/:id", async (req, res) => {
-    const { id } = req.params;
-    const listingData = req.body.listing;
-
-    await Listing.findByIdAndUpdate(id, {
-        title: listingData.title,
-        description: listingData.description,
-        image: {
-            url: listingData.image.url,
-            filename: "listingimage"
-        },
-        price: listingData.price,
-        location: listingData.location,
-        country: listingData.country
-    });
-
-    res.redirect(`/listings/${id}`);
-});
-// -------------------------- Delete Route -------------------------
-app.delete("/listings/:id", async (req, res) => {
-    const { id } = req.params;
-    await Listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-});
 
 
 
@@ -169,3 +98,4 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
     console.log("Server is listening to port 8080");
 });
+
