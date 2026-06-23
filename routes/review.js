@@ -7,6 +7,7 @@ const { reviewSchema } = require("../schema.js");
 
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
+const {isLoggedIn,isReviewAuthor}=require("../middleware.js");
 
 // Review Validation Middleware
 const validateReview = (req, res, next) => {
@@ -22,14 +23,13 @@ const validateReview = (req, res, next) => {
 // POST REVIEW
 router.post(
     "/",
+    isLoggedIn,
     validateReview,
     wrapAsync(async (req, res) => {
         let listing = await Listing.findById(req.params.id);
-
         let newReview = new Review(req.body.review);
-
+        newReview.author=req.user._id;
         listing.reviews.push(newReview);
-
         await newReview.save();
         await listing.save();
         req.flash("success","New Review Added!");
@@ -41,6 +41,8 @@ router.post(
 // DELETE REVIEW
 router.delete(
     "/:reviewId",
+    isLoggedIn,
+    isReviewAuthor,
     wrapAsync(async (req, res) => {
         let { id, reviewId } = req.params;
 
