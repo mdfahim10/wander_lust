@@ -4,6 +4,7 @@ const wrapAsync = require("../utils/wrapAsync");
 const ExpressError = require("../utils/ExpressError");
 const { listingSchema, reviewSchema } = require("../schema");
 const Listing = require("../models/listing.js");
+const {isLoggedIn}=require("../middleware.js");
 
 
 
@@ -13,11 +14,11 @@ router.get("/", async (req, res) => {
     res.render("listings/index", { allListings });
 });
 // -------------------------- New Route -------------------------
-router.get("/new",(req,res)=>{
+router.get("/new", isLoggedIn,(req,res)=>{
     res.render("listings/new.ejs");
 });
 // -------------------------- Edit Route -------------------------
-router.get("/:id/edit", async (req, res) => {
+router.get("/:id/edit", isLoggedIn, async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
     if (!listing) {
@@ -29,7 +30,7 @@ router.get("/:id/edit", async (req, res) => {
 // -------------------------- Show Route -------------------------
 router.get("/:id", async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id).populate("reviews").populate("owner");
     if (!listing) {
         req.flash("error", "Listing does not exist!");
         return res.redirect("/listings");
@@ -37,35 +38,36 @@ router.get("/:id", async (req, res) => {
     res.render("listings/show", { listing });
 });
 // -------------------------- Create Route -------------------------
-router.post("/", wrapAsync(async (req, res, next) => {
+router.post(
+    "/",
+    isLoggedIn,
+    wrapAsync(async (req, res) => {
 
-    // 1️⃣ Get listing data from form
-    const listingData = req.body.listing;
+        const listingData = req.body.listing;
 
-    // 2️⃣ Create new listing
-    const newListing = new Listing({
-        title: listingData.title,
-        description: listingData.description,
-        image: {
-            url: listingData.image?.url || "",
-            filename: "listingimage"
-        },
-        price: listingData.price,
-        location: listingData.location,
-        country: listingData.country
-    });
+        const newListing = new Listing({
+            title: listingData.title,
+            description: listingData.description,
+            image: {
+                url: listingData.image?.url || "",
+                filename: "listingimage"
+            },
+            price: listingData.price,
+            location: listingData.location,
+            country: listingData.country
+        });
 
-    // 3️⃣ Save to database
-    await newListing.save();
-    //flash messages
-    req.flash("success","New Listing Created!");
+        newListing.owner = req.user._id;
 
-    // 4️⃣ Redirect after success
-    res.redirect("/listings");
+        await newListing.save();
 
-}));
+        req.flash("success", "New Listing Created!");
+
+        res.redirect("/listings");
+    })
+);
 // -------------------------- Update Route -------------------------
-router.put("/:id", async (req, res) => {
+router.put("/:id", isLoggedIn, async (req, res) => {
     const { id } = req.params;
     const listingData = req.body.listing;
 
@@ -85,7 +87,7 @@ router.put("/:id", async (req, res) => {
     res.redirect(`/listings/${id}`);
 });
 // -------------------------- Delete Route -------------------------
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isLoggedIn, async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success","Listing Deleted!");
