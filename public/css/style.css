@@ -102,3 +102,26 @@ h3 {
   padding-left: 0;
   padding-right: 0;
 }
+.search-bar{
+    width: 25rem;
+    margin: auto;
+}
+
+.search-input{
+    border-radius: 25px;
+    padding-left: 1rem;
+}
+
+.search-btn{
+    background-color: #2f4f2f;
+    color: white;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    border: none;
+}
+
+.search-btn:hover{
+    background-color: #355e3b;
+    color: white;
+}
