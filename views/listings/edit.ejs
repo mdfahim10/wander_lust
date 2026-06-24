@@ -53,6 +53,33 @@
           />
         </div>
 
+        <!--Category-->
+        <div class="mb-3">
+    <label class="form-label">Category</label>
+
+    <select
+        name="listing[category]"
+        class="form-select"
+        required
+    >
+        <option value="Trending" <%= listing.category === "Trending" ? "selected" : "" %>>Trending</option>
+        <option value="Rooms" <%= listing.category === "Rooms" ? "selected" : "" %>>Rooms</option>
+        <option value="Mountains" <%= listing.category === "Mountains" ? "selected" : "" %>>Mountains</option>
+        <option value="Pools" <%= listing.category === "Pools" ? "selected" : "" %>>Pools</option>
+        <option value="Beach" <%= listing.category === "Beach" ? "selected" : "" %>>Beach</option>
+        <option value="Arctic" <%= listing.category === "Arctic" ? "selected" : "" %>>Arctic</option>
+        <option value="Camping" <%= listing.category === "Camping" ? "selected" : "" %>>Camping</option>
+        <option value="Forest" <%= listing.category === "Forest" ? "selected" : "" %>>Forest</option>
+        <option value="Lakefront" <%= listing.category === "Lakefront" ? "selected" : "" %>>Lakefront</option>
+        <option value="Historical" <%= listing.category === "Historical" ? "selected" : "" %>>Historical</option>
+        <option value="City View" <%= listing.category === "City View" ? "selected" : "" %>>City View</option>
+        <option value="Cabins" <%= listing.category === "Cabins" ? "selected" : "" %>>Cabins</option>
+        <option value="Luxury" <%= listing.category === "Luxury" ? "selected" : "" %>>Luxury</option>
+        <option value="Farm Stay" <%= listing.category === "Farm Stay" ? "selected" : "" %>>Farm Stay</option>
+        <option value="Boats" <%= listing.category === "Boats" ? "selected" : "" %>>Boats</option>
+    </select>
+</div>
+
         <!-- Price + Country Row -->
         <div class="row">
           <div class="mb-3 col-4">

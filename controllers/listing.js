@@ -2,9 +2,16 @@ const Listing = require("../models/listing");
 
 
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
+    let { category } = req.query;
+    let allListings;
+    if (category) {
+        allListings = await Listing.find({ category });
+    } else {
+        allListings = await Listing.find({});
+    }
     res.render("listings/index", { allListings });
 };
+
 module.exports.renderNewForm= (req,res)=>{
     res.render("listings/new.ejs");
 };
@@ -32,6 +39,7 @@ module.exports.createListing =async (req, res) => {
                 url: listingData.image?.url || "",
                 filename: "listingimage"
             },
+            category: listingData.category,
             price: listingData.price,
             location: listingData.location,
             country: listingData.country
