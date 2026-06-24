@@ -7,7 +7,7 @@
     <div class="container mt-4">
       <h3 class="mb-4">Edit Listing</h3>
 
-      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
+      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
 
         <!-- Title -->
         <div class="mb-3">
@@ -34,15 +34,22 @@
           
         </div>
 
-        <!-- Image URL -->
+        <!--Preview Old image-->
         <div class="mb-3">
-          <label class="form-label">Image URL</label>
+          Original Listing Image<br />
+          <img
+            src="<%= originalImageUrl %>"
+            class="img-thumbnail"
+            style="width:100%; max-height:300px; object-fit:cover;"
+          />
+        </div>
+        <!-- Replace Image -->
+        <div class="mb-3">
+          <label class="form-label">Upload Image</label>
           <input 
-            type="text"
-            name="listing[image][url]"
-            value="<%= listing.image.url %>"
+            type="file"
+            name="listing[image]"
             class="form-control"
-            required
           />
         </div>
 
