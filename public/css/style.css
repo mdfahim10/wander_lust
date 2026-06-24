@@ -1,4 +1,12 @@
-
+.logo{
+    height: 225px;
+    width: auto;
+    object-fit: contain;
+    margin-top: 1rem;
+}
+.flash-msg{
+    margin-top: 3.85rem;
+}
 body {
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   display: flex;
