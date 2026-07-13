@@ -125,3 +125,28 @@ h3 {
     background-color: #355e3b;
     color: white;
 }
+.f-info-socials a {
+    color: #222222;
+    text-decoration: none;
+    margin: 0 0.6rem;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+}
+
+.f-info-socials a:hover {
+    color: #ff385c;
+    transform: translateY(-2px);
+}
+
+.f-info-links a {
+    margin: 0 0.5rem;
+}
+
+.f-info-links a:hover {
+    color: #ff385c;
+}
+
+.f-info-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
