@@ -1,36 +1,125 @@
-.logo{
-    height: 80px;
-    width: auto;
-    object-fit: contain;
-}
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-.container{
-    flex: 1;
-}
-h3 {
-  font-weight: 600 !important;
-}
-
-.navbar {
-  font-weight: 500 !important;
-}
+/* Navbar */
 
 .navbar{
-    height: 5rem;
-    background-color:white;
+    height:5rem;
+    background:linear-gradient(90deg,#0f172a,#1e293b);
+    box-shadow:0 5px 18px rgba(0,0,0,.18);
+    padding:0 1rem;
 }
-.fa-compass{
-    color: #fe424d;
-    font-size: 2rem;
+
+.logo{
+    height:75px;
+    width:auto;
+    object-fit:contain;
 }
+
+.navbar-brand{
+    padding:0;
+}
+
+/* Links */
+
 .nav-link{
-    color: #222222 !important;
-    
+    color:#f8fafc !important;
+    margin-left:.8rem;
+    font-weight:500;
+    transition:.3s;
+}
+
+.nav-link:hover{
+    color:#fbbf24 !important;
+}
+
+/* Search */
+
+.search-bar{
+    width:45%;
+}
+
+.search-input{
+    border-radius:50px;
+    border:none;
+    padding:.65rem 1rem;
+    font-size:.95rem;
+}
+
+.search-input:focus{
+    box-shadow:0 0 10px rgba(251,191,36,.45);
+}
+
+.search-btn{
+    margin-left:.5rem;
+    border-radius:50px;
+    background:#fe424d;
+    color:white;
+    border:none;
+    padding:.55rem 1.25rem;
+    transition:.3s;
+}
+
+.search-btn:hover{
+    background:#e63946;
+    color:white;
+    transform:translateY(-2px);
+}
+
+/* Login Button */
+
+.login-btn{
+    background:#fbbf24;
+    color:#111827 !important;
+    padding:.45rem 1rem;
+    border-radius:30px;
+    margin-left:1rem;
+}
+
+.login-btn:hover{
+    background:#f59e0b;
+    color:#111827 !important;
+}
+
+/* Logout Button */
+
+.logout-btn{
+    background:#ef4444;
+    color:white !important;
+    padding:.45rem 1rem;
+    border-radius:30px;
+    margin-left:1rem;
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+    color:white !important;
+}
+
+/* Mobile */
+
+.navbar-toggler{
+    background:white;
+    border-radius:8px;
+}
+
+@media(max-width:992px){
+
+    .navbar{
+        height:auto;
+        padding:1rem;
+    }
+
+    .search-bar{
+        width:100%;
+        margin:1rem 0;
+    }
+
+    .navbar-nav{
+        margin-top:1rem;
+        align-items:flex-start !important;
+    }
+
+    .nav-link{
+        margin:.5rem 0;
+    }
 }
 .f-info {
     height: 8rem;
